@@ -1,5 +1,5 @@
 # CrashPredictionExtension
-This repository is based on the crash prediction pipeline and data from the following repository: https://github.com/Ludivine388/Crash-Prediction. The scenarios involve a pedestrian crossing the street while a bike with an onboard unit is approaching. The scene is filmed from a third-person view from the side of the street. The onboard unit is collecting V2X data from the bike. The data is brought into a format readable by the Atlas-Benchmark (https://github.com/boschresearch/the-atlas-benchmark)
+This repository is based on the crash prediction pipeline and data from the following repository: https://github.com/Ludivine388/Crash-Prediction. The scenarios involve a pedestrian crossing the street while a bike with an onboard unit is approaching. The scene is filmed from a third-person view from the side of the street. The onboard unit is collecting V2X data from the bike. The data is brought into a format readable by the Atlas-Benchmark (https://github.com/boschresearch/the-atlas-benchmark) and then evaluated using the included framework.
 
 ## Pipeline and Data Format
 
@@ -62,9 +62,80 @@ The crash prediction pipeline processes video frames to generate standardized pe
     ```
 - **Output:** `_atlas.json` file for each input folder, saved in `Trajectory Prediction/test_data/atlas_json/mmcp/`, with one JSON object per line.
 
-
-
 # Predictions and Results
+
+# Documentation: MMCP Dataset and Prediction Models
+
+The files are copied into a cloned version of the atlas-benchmark into the designated folder. Note that each scenario in the data will be in a `.njson`-File. In addition, a config is created to read the dataset into the benchmark classes. The current version of the mmcp-config (which stands for Multi-Modal-Crash-Prediction) is based on the config for the ETH-Dataset, which shows students on the campus of ETH University.
+
+## 1. Configuration of the MMCP Dataset
+
+A new configuration file, `dataset_config_mmcp.yaml`, has been created to work with the MMCP data. This file controls how the raw data is loaded, preprocessed, and split for experiments.
+
+```yaml
+# filepath: c:\Dokumente\Studium\HiWi\code\Atlas\the-atlas-benchmark\cfg\dataset_config_mmcp.yaml
+# ...
+# This branch collects all parameters related to the benchmark and experiment setup
+benchmark:
+  setup:
+    interpolate: True
+    smooth: 5 # 0 for no smoothing
+    downsample: False
+    downsample rate: 1 # fps  1 for no downsampling
+    downsample map: False
+    downsample map rate: 1
+    added_noise_sigma: 0 # 0 for no added noise
+
+    observation period: 6
+    prediction horizon: 3
+```
+
+### Key Configuration Parameters:
+
+*   **`dataset:`**: Defines the name (`mmcp`), the paths to the `.json` data files, and the recording frequency (`frequency: 2.5` Hz).
+*   **`benchmark: setup:`**: Contains parameters for preprocessing and the experiment setup.
+    *   `interpolate: True`: Missing positions in the trajectories are linearly interpolated.
+    *   `smooth: 5`: Applies a moving average filter with a window size of 5 to the trajectories to reduce noise.
+    *   `observation period: 6`: The number of past time steps (frames) given to the model as input (observation).
+    *   `prediction horizon: 3`: The number of future time steps (frames) that the model is supposed to predict.
+
+## 2. The "Rolling Prediction" Approach
+
+The framework uses a "Rolling Prediction" (also known as "Sliding Window") approach to generate individual test scenarios from the continuous trajectory data.
+
+Based on the current configuration (`observation period: 6`, `prediction horizon: 3`), this works as follows:
+1.  A window with a total size of 9 (6 + 3) is slid over each agent's trajectory.
+2.  For each position of the window, the **first 6 data points** are used as the **observation (input)** for the predictor.
+3.  The **following 3 data points** serve as the **Ground Truth (GT)**, which is the correct future trajectory used to evaluate the model's prediction.
+
+This process is repeated for all possible starting points along the trajectories, generating a large number of test scenarios for training and evaluation.
+In addition, this mimics a real-time prediction approach, assuming we are always at time point 6 and look 3 points into the future.
+
+## 3. Analysis in the Notebooks
+
+The generated scenarios are used in the Jupyter notebooks to evaluate various prediction models.
+
+### `understanding_benchmark_experiments.ipynb`
+
+This notebook is used for evaluating and comparing "classic" (non-learning-based) prediction models.
+
+**Used Classes:**
+*   `Dataset`: Loads and processes the MMCP data according to `dataset_config_mmcp.yaml`.
+*   `Predictor_kara`, `Predictor_sof`, `Predictor_zan`: These are implementations of different prediction models:
+    *   `Predictor_kara`: Implements a **Constant Velocity Model (CVM)**, which assumes that the agent continues to move with a constant velocity and direction. It is a simple but often effective baseline predictor.
+    *   `Predictor_sof`: Implements a **Social Forces Model**, which models the movement of agents as a combination of a drive towards a goal and repulsive forces from other agents and obstacles.
+    *   `Predictor_zan`: Implements another social model based on the work of Zanlungo et al.
+*   `Benchmark`: Executes the actual experiments. It iterates over the test scenarios, calls the `predict` method of the respective predictor, and calculates metrics like **ADE** (Average Displacement Error) and **FDE** (Final Displacement Error).
+*   `Evaluator`: Is used for visualizing the scenarios, the ground-truth trajectories, and the model predictions.
+
+### `understanding_prediction_with_trajectonpp.ipynb`
+
+This notebook focuses on the evaluation of a more complex, learning-based model.
+
+**Used Classes:**
+*   `TrajectronPredictor`: A wrapper for the **Trajectron++** model. Trajectron++ is a graph-based recurrent neural network (RNN) that explicitly models the interactions between different agents to predict multi-modal (i.e., several possible) future trajectories. It represents the state-of-the-art in the field of trajectory prediction.
+
+By using these notebooks, the simple baseline models can be directly compared with an advanced deep learning model on the MMCP dataset.
 
 ### General model overview (Excel)
 ### Prediction mode
