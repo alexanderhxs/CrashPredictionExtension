@@ -62,9 +62,7 @@ The crash prediction pipeline processes video frames to generate standardized pe
     ```
 - **Output:** `_atlas.json` file for each input folder, saved in `Trajectory Prediction/test_data/atlas_json/mmcp/`, with one JSON object per line.
 
-# Predictions and Results
-
-# Documentation: MMCP Dataset and Prediction Models
+# MMCP Dataset and Prediction Models
 
 The files are copied into a cloned version of the atlas-benchmark into the designated folder. Note that each scenario in the data will be in a `.njson`-File. In addition, a config is created to read the dataset into the benchmark classes. The current version of the mmcp-config (which stands for Multi-Modal-Crash-Prediction) is based on the config for the ETH-Dataset, which shows students on the campus of ETH University.
 
