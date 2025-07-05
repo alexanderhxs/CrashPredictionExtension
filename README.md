@@ -144,17 +144,20 @@ For a detailed understanding of Trajectron++, its architecture, and experimental
 ### Sample Evaluation of one full test scenario
 The following shows the prediction accuracies of the scene `2024-08-22-15-35-33_head_front_camera_color_image_raw_compressed_atlas.json` form the new collected data. The scene shows the complete test scenario and is therefore a good example of data and prediction quality.
 
-<p align="center">
-  <figure style="display: inline-block; margin: 10px;">
-    <img src="resources/sample_prediction_CVM.png" alt="Sample Prediction of the CVM model on scenario index 100" width="400"/>
-    <figcaption style="text-align: center;">Sample Prediction of the CVM model</figcaption>
-  </figure>
+<div style="display: flex; justify-content: center; gap: 20px;">
 
-  <figure style="display: inline-block; margin: 10px;">
-    <img src="resources/sample_prediction_trajectonpp.png" alt="Sample Prediction of Trajecton++ model on scenario index 100" width="400"/>
-    <figcaption style="text-align: center;">Sample Prediction of Trajecton++ model</figcaption>
-  </figure>
-</p>
+  <div style="text-align: center;">
+    <p><strong>Sample Prediction of the CVM model</strong></p>
+    <img src="resources/sample_prediction_CVM.png" alt="CVM Prediction" width="400">
+  </div>
+
+  <div style="text-align: center;">
+    <p><strong>Sample Prediction of Trajecton++ model</strong></p>
+    <img src="resources/sample_prediction_trajectonpp.png" alt="Trajecton++ Prediction" width="400">
+  </div>
+
+</div>
+
 
 
 
