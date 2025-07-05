@@ -113,28 +113,34 @@ In addition, this mimics a real-time prediction approach, assuming we are always
 
 The generated scenarios are used in the Jupyter notebooks to evaluate various prediction models.
 
-### `understanding_benchmark_experiments.ipynb`
+### Evaluation Metrics
+
+The framework uses the following metrics to assess the accuracy of the predictions:
+
+*   **ADE (Average Displacement Error):** The average L2 distance between the entire predicted trajectory and the ground truth trajectory. It measures the average error across the whole prediction horizon.
+*   **FDE (Final Displacement Error):** The L2 distance between the predicted final position and the ground truth final position. It specifically measures the error at the end of the prediction horizon.
+*   **kADE / kFDE (Minimum ADE/FDE over k Samples):** These metrics are used for multi-modal predictors (like Trajectron++) that generate *k* possible future trajectories.
+    *   **kADE (minADE):** The ADE of the best-predicted trajectory (the one closest to the ground truth) out of the *k* generated samples.
+    *   **kFDE (minFDE):** The FDE of the best-predicted trajectory out of the *k* generated samples.
+
+### Analysis in Notebooks
+
+#### `understanding_benchmark_experiments.ipynb`
 
 This notebook is used for evaluating and comparing "classic" (non-learning-based) prediction models.
 
 **Used Classes:**
 *   `Dataset`: Loads and processes the MMCP data according to `dataset_config_mmcp.yaml`.
-*   `Predictor_kara`, `Predictor_sof`, `Predictor_zan`: These are implementations of different prediction models:
-    *   `Predictor_kara`: Implements a **Constant Velocity Model (CVM)**, which assumes that the agent continues to move with a constant velocity and direction. It is a simple but often effective baseline predictor.
-    *   `Predictor_sof`: Implements a **Social Forces Model**, which models the movement of agents as a combination of a drive towards a goal and repulsive forces from other agents and obstacles.
-    *   `Predictor_zan`: Implements another social model based on the work of Zanlungo et al.
-*   `Benchmark`: Executes the actual experiments. It iterates over the test scenarios, calls the `predict` method of the respective predictor, and calculates metrics like **ADE** (Average Displacement Error) and **FDE** (Final Displacement Error).
-*   `Evaluator`: Is used for visualizing the scenarios, the ground-truth trajectories, and the model predictions.
+*   `Predictor_kara`, `Predictor_sof`, `Predictor_zan`: Implementations of baseline models like Constant Velocity (CVM) and Social Forces.
+*   `Benchmark`: Executes the experiments. It iterates over test scenarios, calls the `predict` method of a predictor, and calculates the evaluation metrics (ADE, FDE).
+*   `Evaluator`: Used for visualizing scenarios, ground-truth trajectories, and model predictions.
 
-### `understanding_prediction_with_trajectonpp.ipynb`
+#### `understanding_prediction_with_trajectonpp.ipynb`
 
 This notebook focuses on the evaluation of a more complex, learning-based model.
 
 **Used Classes:**
-*   `TrajectronPredictor`: A wrapper for the **Trajectron++** model. Trajectron++ is a graph-based recurrent neural network (RNN) that explicitly models the interactions between different agents to predict multi-modal (i.e., several possible) future trajectories. It represents the state-of-the-art in the field of trajectory prediction.
-
-By using these notebooks, the simple baseline models can be directly compared with an advanced deep learning model on the MMCP dataset.
-
+*   `TrajectronPredictor`: A wrapper for the **Trajectron++** model. Trajectron++ is a graph-based recurrent neural network (RNN) that predicts multi-modal (i.e., several possible) future trajectories. Its performance is evaluated using ADE/FDE for the most likely prediction and kADE/kFDE to assess the quality of its overall set of predictions.
 ### General model overview (Excel)
 ### Prediction mode
 ### CVM
