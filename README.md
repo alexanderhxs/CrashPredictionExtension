@@ -1,6 +1,8 @@
 # CrashPredictionExtension
 This repository is based on the crash prediction pipeline and data from the following repository: https://github.com/Ludivine388/Crash-Prediction. The scenarios involve a pedestrian crossing the street while a bike with an onboard unit is approaching. The scene is filmed from a third-person view from the side of the street. The onboard unit is collecting V2X data from the bike. The data is brought into a format readable by the Atlas-Benchmark (https://github.com/boschresearch/the-atlas-benchmark) and then evaluated using the included framework.
 
+[[TOC]]
+
 ## Pipeline and Data Format
 
 The crash prediction pipeline processes video frames to generate standardized pedestrian trajectory data. All the referenced files are from the `Trajectory Prediction` folder of https://github.com/Ludivine388/Crash-Prediction. Note that the repo also consists of the files to get the pictures from the .rosbag files. The steps are as follows:
@@ -77,13 +79,13 @@ A crucial aspect of this project is the **MMCP (Multi-Modal-Crash-Prediction) Da
 * **`observation period: 6`**: The number of past time steps (frames) provided as input to the model.
 * **`prediction horizon: 3`**: The number of future time steps (frames) the model is expected to predict.
 
-The framework utilizes a **"Rolling Prediction"** or **"Sliding Window"** approach to generate individual test scenarios. For each agent's trajectory, a window of size 9 (6 observation + 3 prediction) slides over the data. The first 6 data points serve as the observation, and the subsequent 3 data points act as the Ground Truth (GT) for evaluation. This method mimics real-time prediction and generates a comprehensive set of scenarios for training and evaluation.
+The Atlas-Benchmark utilizes a **"Rolling Prediction"** or **"Sliding Window"** approach to generate individual test scenarios. For each agent's trajectory, a window of size 9 (6 observation + 3 prediction) slides over the data. The first 6 data points serve as the observation, and the subsequent 3 data points act as the Ground Truth (GT) for evaluation. This method mimics real-time prediction and generates a comprehensive set of scenarios for training and evaluation.
 
 ---
 
 ### Prediction Mode/Setting
 
-The evaluation of prediction models is conducted within a structured framework that employs specific metrics and analysis tools.
+The atlas-benchmark employs the following metrics and notebock interfaces to use the different models and evaluate the predictions.
 
 **Evaluation Metrics:**
 The accuracy of predictions is assessed using standard metrics:
