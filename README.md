@@ -158,6 +158,13 @@ The following shows the prediction accuracies of the scene `2024-08-22-15-35-33_
 
 </div>
 
+After processing all part-scenario predictions, the overall evaluation comes to the following results for the whole scene:
+
+| Model         | Mean ADE (± std) | Mean FDE (± std) | Mean kADE (± std) | Mean kFDE (± std) |
+|---------------|------------------|------------------|-------------------|-------------------|
+| **Trajectron++**  | 0.202 ± 0.295    | 0.347 ± 0.473    | 0.202 ± 0.295     | 0.347 ± 0.473     |
+| **CVM**           | 0.323 ± 0.389    | 0.483 ± 0.570    | 0.323 ± 0.389     | 0.483 ± 0.570     |
+
 
 
 
