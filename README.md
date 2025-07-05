@@ -64,13 +64,11 @@ The crash prediction pipeline processes video frames to generate standardized pe
 
 # MMCP Dataset and Prediction Models Documentation
 
-This document outlines the structure and key components of the trajectory prediction project, focusing on the integration of the MMCP dataset and the evaluation of various prediction models.
-
----
-
 ### General Model Overview: Which models exist and how do they work?
 
-Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. This project evaluates both classical, non-learning-based models and state-of-the-art deep learning approaches.
+Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. For additional information on the differend pedestrian trajectory prediction approaches, please refer to the accompanying Excel file: `MMCP_Dataset_Information.xlsx`.
+
+### The Dataset inside the benchmark
 
 A crucial aspect of this project is the **MMCP (Multi-Modal-Crash-Prediction) Dataset**, which contains scenarios designed for crash prediction. The dataset is configured via `dataset_config_mmcp.yaml` to control data loading, preprocessing, and splitting. Key parameters include:
 * **`frequency: 2.5` Hz**: The recording frequency of the data.
@@ -80,8 +78,6 @@ A crucial aspect of this project is the **MMCP (Multi-Modal-Crash-Prediction) Da
 * **`prediction horizon: 3`**: The number of future time steps (frames) the model is expected to predict.
 
 The framework utilizes a **"Rolling Prediction"** or **"Sliding Window"** approach to generate individual test scenarios. For each agent's trajectory, a window of size 9 (6 observation + 3 prediction) slides over the data. The first 6 data points serve as the observation, and the subsequent 3 data points act as the Ground Truth (GT) for evaluation. This method mimics real-time prediction and generates a comprehensive set of scenarios for training and evaluation.
-
-For additional information on the dataset, including detailed statistics and potential biases, please refer to the accompanying Excel file: `MMCP_Dataset_Information.xlsx`.
 
 ---
 
