@@ -1,7 +1,6 @@
 # CrashPredictionExtension
 This repository is based on the crash prediction pipeline and data from the following repository: https://github.com/Ludivine388/Crash-Prediction. The scenarios involve a pedestrian crossing the street while a bike with an onboard unit is approaching. The scene is filmed from a third-person view from the side of the street. The onboard unit is collecting V2X data from the bike. The data is brought into a format readable by the Atlas-Benchmark (https://github.com/boschresearch/the-atlas-benchmark) and then evaluated using the included framework.
 
-[[TOC]]
 
 ## Pipeline and Data Format
 
@@ -66,9 +65,9 @@ The crash prediction pipeline processes video frames to generate standardized pe
 
 # MMCP Dataset and Prediction Models Documentation
 
-### General Model Overview: Which models exist and how do they work?
+### General Model Overview: Which models exist, and how do they work?
 
-Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. For additional information on the differend pedestrian trajectory prediction approaches, please refer to the accompanying Excel file: `MMCP_Dataset_Information.xlsx`.
+Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. For additional information on the different pedestrian trajectory prediction approaches, please refer to the accompanying Excel file: `MMCP_Dataset_Information.xlsx`.
 
 ### The Dataset inside the benchmark
 
@@ -141,6 +140,9 @@ Due to its multi-modal nature, Trajectron++'s performance is not only assessed w
 **Reference:**
 For a detailed understanding of Trajectron++, its architecture, and experimental results, refer to the original publication:
 * **Derek Castro, Kashyap Chitta, and Andreas Geiger.** "Trajectron++: Multi-agent forecasting with human-centric scene representation." *Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)*, 2019.
+
+### Sample Evaluation of one full test scenario
+The following shows the prediction accuracies of the scene `2024-08-22-15-35-33_head_front_camera_color_image_raw_compressed_atlas.json` form the new collected data. The scene shows the complete test scenario and is therefore a good example of data and prediction quality.
 
 
 # Current problems
