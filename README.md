@@ -3,7 +3,7 @@ This repository is based on the crash prediction pipeline and data from the foll
 
 ## Pipeline and Data Format
 
-The crash prediction pipeline processes video frames to generate standardized pedestrian trajectory data. All the referenced files are from the 'Trajectory Prediction' folder of https://github.com/Ludivine388/Crash-Prediction. Note that the repo also consists of the files to get the pictures from the .rosbag files. The steps are as follows:
+The crash prediction pipeline processes video frames to generate standardized pedestrian trajectory data. All the referenced files are from the `Trajectory Prediction` folder of https://github.com/Ludivine388/Crash-Prediction. Note that the repo also consists of the files to get the pictures from the .rosbag files. The steps are as follows:
 
 ### 1. Initial Data
 
