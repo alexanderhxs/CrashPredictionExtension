@@ -109,9 +109,9 @@ Based on the current configuration (`observation period: 6`, `prediction horizon
 This process is repeated for all possible starting points along the trajectories, generating a large number of test scenarios for training and evaluation.
 In addition, this mimics a real-time prediction approach, assuming we are always at time point 6 and look 3 points into the future.
 
-## 3. Analysis in the Notebooks
+## 3. Analysis and Evaluation
 
-The generated scenarios are used in the Jupyter notebooks to evaluate various prediction models.
+The generated scenarios are used in the Jupyter notebooks to evaluate and compare various prediction models using a set of standard metrics.
 
 ### Evaluation Metrics
 
@@ -127,20 +127,29 @@ The framework uses the following metrics to assess the accuracy of the predictio
 
 #### `understanding_benchmark_experiments.ipynb`
 
-This notebook is used for evaluating and comparing "classic" (non-learning-based) prediction models.
+This notebook serves as the primary tool for evaluating and comparing traditional, non-learning-based prediction models. It provides a clear baseline for model performance on the MMCP dataset.
 
-**Used Classes:**
-*   `Dataset`: Loads and processes the MMCP data according to `dataset_config_mmcp.yaml`.
-*   `Predictor_kara`, `Predictor_sof`, `Predictor_zan`: Implementations of baseline models like Constant Velocity (CVM) and Social Forces.
-*   `Benchmark`: Executes the experiments. It iterates over test scenarios, calls the `predict` method of a predictor, and calculates the evaluation metrics (ADE, FDE).
-*   `Evaluator`: Used for visualizing scenarios, ground-truth trajectories, and model predictions.
+**Core Classes and Their Roles:**
+
+*   `Dataset`: This class is the foundation for data handling. It is responsible for loading the raw `.json` files specified in `dataset_config_mmcp.yaml`. During initialization, it applies the preprocessing steps defined in the configuration, such as interpolation and smoothing. Its `extract_scenarios` method implements the "Rolling Prediction" logic, creating the individual observation/ground-truth pairs used for evaluation.
+*   `Predictor_kara`, `Predictor_sof`, `Predictor_zan`: These classes encapsulate classic trajectory prediction algorithms. They are initialized with the dataset and a method-specific configuration.
+    *   `Predictor_kara`: Implements a **Constant Velocity Model (CVM)**. This is a simple kinematic model that extrapolates the agent's last known velocity to predict its future path. It serves as a fundamental baseline.
+    *   `Predictor_sof`: Implements a **Social Forces Model**. This physics-based model treats agents as particles that are influenced by forces, including a driving force toward a goal and repulsive forces from other agents and obstacles. It models basic social interactions.
+*   `Benchmark`: This class orchestrates the evaluation process. It takes a set of scenarios (from the `Dataset` object) and a predictor object. Its `accuracy_experiment` method iterates through each scenario, calls the predictor's `predict` method, and computes the specified metric (e.g., 'ade' or 'fde') by comparing the prediction to the ground truth.
+*   `Evaluator`: This utility class is used for calculating the final error metrics and for visualization. It contains the logic to compute ADE and FDE from a prediction and a ground truth trajectory. Its `plot_scenario` method can be used to visually inspect a scene, including the agent's past path, the ground truth future, and the model's prediction.
 
 #### `understanding_prediction_with_trajectonpp.ipynb`
 
-This notebook focuses on the evaluation of a more complex, learning-based model.
+This notebook is dedicated to evaluating a state-of-the-art, learning-based model, providing a comparison against the simpler baselines from the other notebook.
 
-**Used Classes:**
-*   `TrajectronPredictor`: A wrapper for the **Trajectron++** model. Trajectron++ is a graph-based recurrent neural network (RNN) that predicts multi-modal (i.e., several possible) future trajectories. Its performance is evaluated using ADE/FDE for the most likely prediction and kADE/kFDE to assess the quality of its overall set of predictions.
+**Core Classes and Their Roles:**
+
+*   `TrajectronPredictor`: This class acts as a wrapper for the powerful **Trajectron++** model. Trajectron++ is a pre-trained, graph-based recurrent neural network (RNN) designed for trajectory prediction.
+    *   **Graph-Based Approach**: It models the scene as a dynamic graph where agents are nodes and their spatial proximity defines the edges. This structure allows the model to explicitly reason about social interactions between multiple agents simultaneously.
+    *   **Multi-modality**: Unlike the classic models that produce a single deterministic output, Trajectron++ generates a distribution over several possible future trajectories (*k* samples). This captures the inherent uncertainty of human movement (e.g., a person at an intersection could go straight, turn left, or turn right).
+    *   **Evaluation**: Because of its multi-modal nature, its performance is assessed not only with ADE/FDE on its most likely prediction but also with kADE/kFDE. These "minimum-over-k" metrics evaluate how well the set of all *k* predictions covers the actual future path, rewarding the model if at least one of its predictions was close to the ground truth.
+
+
 ### General model overview (Excel)
 ### Prediction mode
 ### CVM
