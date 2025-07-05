@@ -62,98 +62,88 @@ The crash prediction pipeline processes video frames to generate standardized pe
     ```
 - **Output:** `_atlas.json` file for each input folder, saved in `Trajectory Prediction/test_data/atlas_json/mmcp/`, with one JSON object per line.
 
-# MMCP Dataset and Prediction Models
+# MMCP Dataset and Prediction Models Documentation
 
-The files are copied into a cloned version of the atlas-benchmark into the designated folder. Note that each scenario in the data will be in a `.njson`-File. In addition, a config is created to read the dataset into the benchmark classes. The current version of the mmcp-config (which stands for Multi-Modal-Crash-Prediction) is based on the config for the ETH-Dataset, which shows students on the campus of ETH University.
+This document outlines the structure and key components of the trajectory prediction project, focusing on the integration of the MMCP dataset and the evaluation of various prediction models.
 
-## 1. Configuration of the MMCP Dataset
+---
 
-A new configuration file, `dataset_config_mmcp.yaml`, has been created to work with the MMCP data. This file controls how the raw data is loaded, preprocessed, and split for experiments.
+### General Model Overview: Which models exist and how do they work?
 
-```yaml
-# filepath: c:\Dokumente\Studium\HiWi\code\Atlas\the-atlas-benchmark\cfg\dataset_config_mmcp.yaml
-# ...
-# This branch collects all parameters related to the benchmark and experiment setup
-benchmark:
-  setup:
-    interpolate: True
-    smooth: 5 # 0 for no smoothing
-    downsample: False
-    downsample rate: 1 # fps  1 for no downsampling
-    downsample map: False
-    downsample map rate: 1
-    added_noise_sigma: 0 # 0 for no added noise
+Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. This project evaluates both classical, non-learning-based models and state-of-the-art deep learning approaches.
 
-    observation period: 6
-    prediction horizon: 3
-```
+A crucial aspect of this project is the **MMCP (Multi-Modal-Crash-Prediction) Dataset**, which contains scenarios designed for crash prediction. The dataset is configured via `dataset_config_mmcp.yaml` to control data loading, preprocessing, and splitting. Key parameters include:
+* **`frequency: 2.5` Hz**: The recording frequency of the data.
+* **`interpolate: True`**: Linearly interpolates missing positions in trajectories.
+* **`smooth: 5`**: Applies a moving average filter with a window size of 5 to reduce noise.
+* **`observation period: 6`**: The number of past time steps (frames) provided as input to the model.
+* **`prediction horizon: 3`**: The number of future time steps (frames) the model is expected to predict.
 
-### Key Configuration Parameters:
+The framework utilizes a **"Rolling Prediction"** or **"Sliding Window"** approach to generate individual test scenarios. For each agent's trajectory, a window of size 9 (6 observation + 3 prediction) slides over the data. The first 6 data points serve as the observation, and the subsequent 3 data points act as the Ground Truth (GT) for evaluation. This method mimics real-time prediction and generates a comprehensive set of scenarios for training and evaluation.
 
-*   **`dataset:`**: Defines the name (`mmcp`), the paths to the `.json` data files, and the recording frequency (`frequency: 2.5` Hz).
-*   **`benchmark: setup:`**: Contains parameters for preprocessing and the experiment setup.
-    *   `interpolate: True`: Missing positions in the trajectories are linearly interpolated.
-    *   `smooth: 5`: Applies a moving average filter with a window size of 5 to the trajectories to reduce noise.
-    *   `observation period: 6`: The number of past time steps (frames) given to the model as input (observation).
-    *   `prediction horizon: 3`: The number of future time steps (frames) that the model is supposed to predict.
+For additional information on the dataset, including detailed statistics and potential biases, please refer to the accompanying Excel file: `MMCP_Dataset_Information.xlsx`.
 
-## 2. The "Rolling Prediction" Approach
+---
 
-The framework uses a "Rolling Prediction" (also known as "Sliding Window") approach to generate individual test scenarios from the continuous trajectory data.
+### Prediction Mode/Setting
 
-Based on the current configuration (`observation period: 6`, `prediction horizon: 3`), this works as follows:
-1.  A window with a total size of 9 (6 + 3) is slid over each agent's trajectory.
-2.  For each position of the window, the **first 6 data points** are used as the **observation (input)** for the predictor.
-3.  The **following 3 data points** serve as the **Ground Truth (GT)**, which is the correct future trajectory used to evaluate the model's prediction.
+The evaluation of prediction models is conducted within a structured framework that employs specific metrics and analysis tools.
 
-This process is repeated for all possible starting points along the trajectories, generating a large number of test scenarios for training and evaluation.
-In addition, this mimics a real-time prediction approach, assuming we are always at time point 6 and look 3 points into the future.
+**Evaluation Metrics:**
+The accuracy of predictions is assessed using standard metrics:
 
-## 3. Analysis and Evaluation
+* **ADE (Average Displacement Error)**: The average L2 distance between the entire predicted trajectory and the ground truth trajectory.
+* **FDE (Final Displacement Error)**: The L2 distance between the predicted final position and the ground truth final position.
+* **kADE / kFDE (Minimum ADE/FDE over k Samples)**: Used for multi-modal predictors that generate *k* possible future trajectories. kADE (minADE) is the ADE of the best-predicted trajectory among *k* samples, and kFDE (minFDE) is the FDE of the best-predicted trajectory among *k* samples.
 
-The generated scenarios are used in the Jupyter notebooks to evaluate and compare various prediction models using a set of standard metrics.
+**Analysis in Notebooks:**
 
-### Evaluation Metrics
+* **`understanding_benchmark_experiments.ipynb`**: This notebook is used for evaluating and comparing traditional, non-learning-based prediction models. It provides a baseline for performance on the MMCP dataset. Key classes involved are:
+    * `Dataset`: Handles loading, preprocessing, and scenario extraction from raw `.json` files.
+    * `Predictor_kara` (CVM), `Predictor_sof` (Social Forces), `Predictor_zan`: Encapsulate classic trajectory prediction algorithms.
+    * `Benchmark`: Orchestrates the evaluation, iterating through scenarios, calling predictor methods, and computing metrics.
+    * `Evaluator`: A utility class for calculating error metrics (ADE, FDE) and visualizing scenarios.
 
-The framework uses the following metrics to assess the accuracy of the predictions:
+* **`understanding_prediction_with_trajectonpp.ipynb`**: This notebook focuses on evaluating state-of-the-art, learning-based models, specifically Trajectron++. It allows for a comparison against the simpler baselines. The core class here is `TrajectronPredictor`.
 
-*   **ADE (Average Displacement Error):** The average L2 distance between the entire predicted trajectory and the ground truth trajectory. It measures the average error across the whole prediction horizon.
-*   **FDE (Final Displacement Error):** The L2 distance between the predicted final position and the ground truth final position. It specifically measures the error at the end of the prediction horizon.
-*   **kADE / kFDE (Minimum ADE/FDE over k Samples):** These metrics are used for multi-modal predictors (like Trajectron++) that generate *k* possible future trajectories.
-    *   **kADE (minADE):** The ADE of the best-predicted trajectory (the one closest to the ground truth) out of the *k* generated samples.
-    *   **kFDE (minFDE):** The FDE of the best-predicted trajectory out of the *k* generated samples.
+---
 
-### Analysis in Notebooks
-
-#### `understanding_benchmark_experiments.ipynb`
-
-This notebook serves as the primary tool for evaluating and comparing traditional, non-learning-based prediction models. It provides a clear baseline for model performance on the MMCP dataset.
-
-**Core Classes and Their Roles:**
-
-*   `Dataset`: This class is the foundation for data handling. It is responsible for loading the raw `.json` files specified in `dataset_config_mmcp.yaml`. During initialization, it applies the preprocessing steps defined in the configuration, such as interpolation and smoothing. Its `extract_scenarios` method implements the "Rolling Prediction" logic, creating the individual observation/ground-truth pairs used for evaluation.
-*   `Predictor_kara`, `Predictor_sof`, `Predictor_zan`: These classes encapsulate classic trajectory prediction algorithms. They are initialized with the dataset and a method-specific configuration.
-    *   `Predictor_kara`: Implements a **Constant Velocity Model (CVM)**. This is a simple kinematic model that extrapolates the agent's last known velocity to predict its future path. It serves as a fundamental baseline.
-    *   `Predictor_sof`: Implements a **Social Forces Model**. This physics-based model treats agents as particles that are influenced by forces, including a driving force toward a goal and repulsive forces from other agents and obstacles. It models basic social interactions.
-*   `Benchmark`: This class orchestrates the evaluation process. It takes a set of scenarios (from the `Dataset` object) and a predictor object. Its `accuracy_experiment` method iterates through each scenario, calls the predictor's `predict` method, and computes the specified metric (e.g., 'ade' or 'fde') by comparing the prediction to the ground truth.
-*   `Evaluator`: This utility class is used for calculating the final error metrics and for visualization. It contains the logic to compute ADE and FDE from a prediction and a ground truth trajectory. Its `plot_scenario` method can be used to visually inspect a scene, including the agent's past path, the ground truth future, and the model's prediction.
-
-#### `understanding_prediction_with_trajectonpp.ipynb`
-
-This notebook is dedicated to evaluating a state-of-the-art, learning-based model, providing a comparison against the simpler baselines from the other notebook.
-
-**Core Classes and Their Roles:**
-
-*   `TrajectronPredictor`: This class acts as a wrapper for the powerful **Trajectron++** model. Trajectron++ is a pre-trained, graph-based recurrent neural network (RNN) designed for trajectory prediction.
-    *   **Graph-Based Approach**: It models the scene as a dynamic graph where agents are nodes and their spatial proximity defines the edges. This structure allows the model to explicitly reason about social interactions between multiple agents simultaneously.
-    *   **Multi-modality**: Unlike the classic models that produce a single deterministic output, Trajectron++ generates a distribution over several possible future trajectories (*k* samples). This captures the inherent uncertainty of human movement (e.g., a person at an intersection could go straight, turn left, or turn right).
-    *   **Evaluation**: Because of its multi-modal nature, its performance is assessed not only with ADE/FDE on its most likely prediction but also with kADE/kFDE. These "minimum-over-k" metrics evaluate how well the set of all *k* predictions covers the actual future path, rewarding the model if at least one of its predictions was close to the ground truth.
-
-
-### General model overview (Excel)
-### Prediction mode
 ### CVM
-### Trajectron ++
+
+The **Constant Velocity Model (CVM)** is a fundamental baseline predictor implemented in the `Predictor_kara` class within the `understanding_benchmark_experiments.ipynb` notebook.
+
+**How it works:**
+The CVM operates on a simple kinematic principle: it extrapolates an agent's future path by assuming its velocity remains constant based on its last known movement. Given the observation period, the model calculates the average velocity (or simply uses the velocity between the last two observed points) and projects this velocity forward for the prediction horizon.
+
+**Advantages:**
+* **Simplicity:** Easy to implement and computationally inexpensive.
+* **Baseline:** Provides a basic performance benchmark against which more complex models can be compared.
+
+**Disadvantages:**
+* **Lack of Realism:** Fails to account for changes in speed or direction, interactions with other agents, or environmental constraints. It produces linear predictions.
+* **Poor Performance in Dynamic Scenarios:** Its accuracy significantly degrades in scenarios involving turns, accelerations/decelerations, or social interactions.
+
+**Reference:** While the CVM is a very basic concept, it is a common baseline in trajectory prediction research. Its principle is often implicitly understood rather than explicitly presented in a dedicated paper. However, it is frequently used as a comparison in papers introducing more complex models.
+
+---
+
+### Trajectron++
+
+**Trajectron++** is a sophisticated, learning-based model for multi-agent trajectory prediction, encapsulated by the `TrajectronPredictor` class in the `understanding_prediction_with_trajectonpp.ipynb` notebook. It represents a significant advancement over classical models by explicitly modeling interactions and inherent uncertainty in future movements.
+
+**How it works:**
+Trajectron++ is a pre-trained, **graph-based recurrent neural network (RNN)**.
+* **Graph-Based Approach:** The model represents the entire scene as a dynamic graph. Each agent is a node in this graph, and edges are formed based on spatial proximity, allowing the model to explicitly reason about inter-agent relationships and their influence on trajectories. This enables it to capture complex social interactions between multiple agents simultaneously.
+* **Multi-Modality:** A key distinguishing feature of Trajectron++ is its ability to generate a **distribution over several possible future trajectories (*k* samples)**, rather than a single deterministic output. This is crucial for capturing the inherent uncertainty in human behavior (e.g., a pedestrian at an intersection could go straight, turn left, or turn right). This multi-modal output provides a more comprehensive understanding of potential future states.
+* **Prediction Generation:** Based on observed trajectories and environmental context, Trajectron++ learns to predict the probability distribution of future paths for each agent. The *k* samples are drawn from this learned distribution.
+
+**Evaluation:**
+Due to its multi-modal nature, Trajectron++'s performance is not only assessed with ADE/FDE on its most likely prediction but also, and more importantly, with **kADE/kFDE**. These "minimum-over-k" metrics evaluate how well the set of all *k* predictions covers the actual future path, rewarding the model if at least one of its predictions was close to the ground truth. This approach acknowledges the non-deterministic nature of real-world trajectories.
+
+**Reference:**
+For a detailed understanding of Trajectron++, its architecture, and experimental results, refer to the original publication:
+* **Derek Castro, Kashyap Chitta, and Andreas Geiger.** "Trajectron++: Multi-agent forecasting with human-centric scene representation." *Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)*, 2019.
+
 
 # Current problems
 
