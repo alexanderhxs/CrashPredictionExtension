@@ -2,7 +2,7 @@
 This repository is based on the crash prediction pipeline and data from the following repository: https://github.com/Ludivine388/Crash-Prediction. The scenarios involve a pedestrian crossing the street while a bike with an onboard unit is approaching. The scene is filmed from a third-person view from the side of the street. The onboard unit is collecting V2X data from the bike. The data is brought into a format readable by the Atlas-Benchmark (https://github.com/boschresearch/the-atlas-benchmark) and then evaluated using the included framework.
 
 
-## Pipeline and Data Format
+# Pipeline and Data Format
 
 The crash prediction pipeline processes video frames to generate standardized pedestrian trajectory data. All the referenced files are from the `Trajectory Prediction` folder of https://github.com/Ludivine388/Crash-Prediction. Note that the repo also consists of the files to get the pictures from the .rosbag files. The steps are as follows:
 
@@ -159,15 +159,14 @@ The following shows the prediction accuracies of the scene `2024-08-22-15-35-33_
 
 </div>
 
-After processing all part-scenario predictions, the overall evaluation comes to the following results for the whole scene:
+After processing all part-scenario predictions, the overall evaluation of the selected scenario comes to the following results:
 
 | Model         | Mean ADE (± std) | Mean FDE (± std) | Mean kADE (± std) | Mean kFDE (± std) |
 |---------------|------------------|------------------|-------------------|-------------------|
 | **Trajectron++**  | 0.202 ± 0.295    | 0.347 ± 0.473    | 0.202 ± 0.295     | 0.347 ± 0.473     |
 | **CVM**           | 0.323 ± 0.389    | 0.483 ± 0.570    | 0.323 ± 0.389     | 0.483 ± 0.570     |
 
-
-
+Here we can see that the Trajectron++, as a learning based model, outperforms the CVM on this particular scene. This trend persists for the whole dataset; however, there are a few scenes where the CVM performs slightly better than the trajectorn++. Note that all experiments so far just include one pedestrian, so models including social aspects to predict the pedestrian's trajectory have no additional power. 
 
 # Current problems
 
