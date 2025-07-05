@@ -4,9 +4,9 @@ This repository is based on the crash prediction pipeline and data from the foll
 # Pipeline and Data format
 
 1. Initial Data
-The pipeline starts with a sequence of images (frames) extracted from a video recording. These frames should be located in a dedicated folder within Trajectory Prediction/test_data/.
+The pipeline starts with a sequence of images (frames) extracted from a video recording. These frames should be located in a dedicated folder.
 
-Input: A folder containing image frames (e.g., ../test_data/2024-08-22-15-35-05_folder/).
+Input: A folder containing image frames (e.g., Trajectory Prediction/test_data/2024-08-22-15-35-05_folder/).
 2. Depth Analysis
 This step generates a depth map for each input frame, estimating the distance of each pixel from the camera.
 
