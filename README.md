@@ -67,7 +67,8 @@ The crash prediction pipeline processes video frames to generate standardized pe
 
 ### General Model Overview: Which models exist, and how do they work?
 
-Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. For additional information on the different pedestrian trajectory prediction approaches, please refer to the accompanying Excel file: `MMCP_Dataset_Information.xlsx`.
+Trajectory prediction involves forecasting the future movements of agents (e.g., pedestrians, vehicles) based on their past trajectories and interactions within an environment. For additional information on the different pedestrian trajectory prediction approaches, please refer to the accompanying Excel file: [methods_overview.xlsx](methods_overview.xlsx).
+
 
 ### The Dataset inside the benchmark
 
@@ -84,7 +85,7 @@ The Atlas-Benchmark utilizes a **"Rolling Prediction"** or **"Sliding Window"** 
 
 ### Prediction Mode/Setting
 
-The atlas-benchmark employs the following metrics and notebock interfaces to use the different models and evaluate the predictions.
+The atlas-benchmark employs the following metrics and notebook interfaces to use the different models and evaluate the predictions.
 
 **Evaluation Metrics:**
 The accuracy of predictions is assessed using standard metrics:
