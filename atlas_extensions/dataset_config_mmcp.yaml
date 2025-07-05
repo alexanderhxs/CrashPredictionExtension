@@ -1,0 +1,53 @@
+# This branch collects all parameters related to loading the trajectory and map data
+dataset:
+    name: mmcp
+    data: [
+        #dataset\mmcp\2024-08-22-14-49-26_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-00-06_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-05-42_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-06-55_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-09-07_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-09-34_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-09-58_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-10-15_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-10-50_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-11-48_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-12-50_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-13-13_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-16-10_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-16-26_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-17-14_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-17-32_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-18-55_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-19-18_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-19-42_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-23-40_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-24-16_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-29-28_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-30-25_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-30-56_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-32-26_head_front_camera_color_image_raw_compressed_atlas.json,
+        dataset\mmcp\2024-08-22-15-35-33_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-44-17_head_front_camera_color_image_raw_compressed_atlas.json,
+        #dataset\mmcp\2024-08-22-15-44-52_head_front_camera_color_image_raw_compressed_atlas.json
+        ]
+    frequency: 2.5
+    annotation interval: 1
+    goals: /dataset/destinations-mmcp.txt
+    map: NULL
+      
+
+
+# This branch collects all parameters related to the benchmark and experiment setup
+benchmark:
+  setup:
+    interpolate: True
+    smooth: 5 # 0 for no smoothing
+    downsample: False
+    downsample rate: 1 # fps  1 for no downsampling
+    downsample map: False
+    downsample map rate: 1
+    added_noise_sigma: 0 # 0 for no added noise
+
+    observation period: 6
+    prediction horizon: 3
