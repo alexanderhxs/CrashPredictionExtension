@@ -5,14 +5,14 @@ This repository is based on the crash prediction pipeline and data from the foll
 
 # Prediction format and results
 
-## General model overview (Excel)
-## Prediction mode
-## CVM
-## Trajectron ++
+### General model overview (Excel)
+### Prediction mode
+### CVM
+### Trajectron ++
 
 # Current problems
 
-## Dataset availability
-## Accuracy of Pipeline
+### Dataset availability
+### Accuracy of Pipeline
 
 # Possible Extensions
