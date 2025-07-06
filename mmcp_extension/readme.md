@@ -38,3 +38,39 @@ All scripts described here are located in the `Crash-Prediction/helpers/` direct
 *   **Pipeline Step**: **Post-processing**. It is used by `concat_json.py`.
 *   **Difference from Original Repo**: This is a new file, introduced to support the functionality of `concat_json.py`.
 
+
+# Project Setup and Installation
+
+This guide provides instructions on how to set up the necessary environment and dependencies to run the trajectory prediction pipeline.
+
+## 1. Prerequisites
+
+*   **Python**: This project is developed and tested with **Python 3.8**. It is recommended to use this version to avoid potential compatibility issues.
+*   **Git**: To clone the repository and fetch model checkpoints.
+*   **(Optional) NVIDIA GPU**: For significantly faster processing, an NVIDIA GPU with a compatible CUDA toolkit is recommended.
+
+## 2. Environment Setup
+
+It is highly recommended to use a virtual environment to manage project dependencies.
+
+**1. Create a virtual environment:**
+Open a terminal in the project's root directory and run:
+```bash
+python -m venv .venv
+```
+
+**2. Activate the virtual environment:**
+*   On **Windows**:
+    ```bash
+    .\.venv\Scripts\activate
+    ```
+*   On **macOS/Linux**:
+    ```bash
+    source .venv/bin/activate
+    ```
+Your terminal prompt should now be prefixed with `(.venv)`.
+
+## 3. Install Dependencies
+
+### `requirements.txt`
+
