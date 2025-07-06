@@ -193,3 +193,12 @@ Noticeable inconsistencies can be observed in the ground truth data, ranging fro
 ---
 
 ## Possible Extensions
+
+### Using a better pose model
+One could employ a better pose model to enhance the detection accuracy of pedestrians and thus the data quality of the trajectories. A strong model is https://github.com/isarandi/metrabs The model is real-time capable and can detect the poses directly in a 3D room (if calibration is provided)
+
+### More Crash prediction
+Use one of the models to predict a crash. Try out different observation periods and data collection scenarios (e.g., always the same observation period or accumulating observation period). 
+
+### Collect new data
+A lot of issues with the data quality could be resolved by collecting a new set of data with a consistent frame rate. One could also think about incorporating semantic maps into the data for improved prediction accuracy.
