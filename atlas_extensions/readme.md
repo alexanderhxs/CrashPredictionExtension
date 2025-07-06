@@ -71,3 +71,73 @@ This notebook is the centerpiece of the analysis. It demonstrates the entire pro
 
 ### Visualization
 In addition to the quantitative analysis, the notebook offers the ability to visually inspect the predictions for any selected scenario. The `evaluation.plot_scenario()` function draws the observed trajectory, the ground-truth future, and the models' predictions, providing qualitative insight into the models' behavior.
+
+
+
+# Setup and Installation
+
+This guide provides instructions for setting up the necessary environment to run the experiments in this repository. It is highly recommended to use a virtual environment to avoid conflicts with other Python projects.
+
+## 1. Prerequisites
+
+-   **Python:** This project is best run with **Python 3.8**. While other versions might work, 3.8 is recommended for compatibility with all dependencies, especially PyTorch.
+-   **Git:** To clone the repository.
+-   **(Optional) NVIDIA GPU with CUDA:** To get the best performance from the Trajectron++ model, an NVIDIA GPU with a compatible CUDA toolkit is required.
+
+## 2. Environment Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repository-url>
+    cd <repository-folder>
+    ```
+
+2.  **Create and activate a virtual environment:**
+
+    *   On **Windows**:
+        ```bash
+        python -m venv venv
+        .\venv\Scripts\activate
+        ```
+    *   On **macOS/Linux**:
+        ```bash
+        python3 -m venv venv
+        source venv/bin/activate
+        ```
+
+## 3. Installing Dependencies
+
+### Step 3.1: Install PyTorch (Special Instructions)
+
+**Do not** add `torch` or `torchvision` to the `requirements.txt` file directly. The correct installation command depends on your operating system and whether you have a CUDA-enabled GPU.
+
+1.  Visit the official PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)
+
+2.  Use the interactive tool on the website to select your system's configuration (e.g., Stable, Windows/Linux, Pip, Python, CUDA version or CPU).
+
+3.  Copy the generated command and run it in your activated virtual environment.
+
+    *   **Example for CPU-only on Windows/Linux:**
+        ```bash
+        pip install torch torchvision torchaudio
+        ```
+    *   **Example for CUDA 11.8 on Windows/Linux:**
+        ```bash
+        pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+        ```
+
+**Why is this necessary?**
+PyTorch needs to be compiled against the specific CUDA toolkit installed on your system to leverage the GPU. The standard `pip install torch` command often installs a CPU-only version, which will cause the Trajectron++ model to run very slowly or fail if it expects a GPU. The official PyTorch website provides the correct package URL for your specific hardware setup.
+
+### Step 3.2: Install Remaining Packages
+
+Once PyTorch is installed correctly, you can install all the other packages from your `requirements.txt` file with a single command:
+
+```bash
+pip install -r requirements.txt
+```
+
+After completing these steps, your environment is ready. You can now launch the Jupyter Notebooks (e.g., `data_evaluation.ipynb`) to run the analyses.
+```bash
+jupyter notebook
+```
