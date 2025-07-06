@@ -182,7 +182,7 @@ Despite their strengths, these datasets do not contain scenes where pedestrians 
 ---
 
 ### Accuracy of Pipeline
-Noticeable inconsistencies can be observed in the ground truth data, ranging from varying step-sizes to backward steps and unusual directional patterns (e.g., zig-zag movements). Since this pipeline determines the pedestrian's position based on two computer vision models (a depth model and a pose model), an inherent uncertainty arises from their individual limitations, leading to inconsistencies between frames. An additional contributing factor is the inconsistent framerate of the camera. The `.mp4` videos do not maintain a consistent speed, resulting in a framerate that varies over time or a video speed that fluctuates throughout the scene. The following picture illustrates this for a 6 point observation period and a 3 point prediction horizion:
+Noticeable inconsistencies can be observed in the ground truth data, ranging from varying step-sizes to backward steps and unusual directional patterns (e.g., zig-zag movements). Since this pipeline determines the pedestrian's position based on two computer vision models (a depth model and a pose model), an inherent uncertainty arises from their individual limitations, leading to inconsistencies between frames. An additional contributing factor is the inconsistent framerate of the camera. The `.mp4` videos do not maintain a consistent speed, resulting in a framerate that varies over time or a video speed that fluctuates throughout the scene. The following picture illustrates this for a 6-point observation period and a 3-point prediction horizon:
 
 [](resources/dataquality_example.png)
 
