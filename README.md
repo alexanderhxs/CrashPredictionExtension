@@ -170,7 +170,19 @@ Here we can see that the Trajectron++, as a learning based model, outperforms th
 
 # Current problems
 
-### Dataset availability
+### Dataset Availability
+To further develop the approach described in this repository, a more extensive dataset would be beneficial. Such a dataset would allow for obtaining test scenes from various angles and provide diverse papers for comparison, enabling a more robust validation of how much V2X integration could enhance crash predictions with pedestrians compared to standard vision-based models. However, most existing datasets lack both an extensive variety of scenes similar to the test scenario in this pipeline and the collection of V2X data from observed vehicles.
+
+Two prominent datasets that have filmed traffic scenes from a comparable third-person view and contain V2X data are:
+* **TUM-TraffiX dataset**: Documented in "TUM-TraffiX: An Urban Dataset for Traffic Scene Analysis and Prediction with V2X Communication" by Renz et al., *IEEE Intelligent Transportation Systems Conference (ITSC)*, 2021.
+* **V2X-seq-SPD datasets**: Described in "V2X-Seq-SPD: A Dataset for V2X Sequence Prediction and Safety Driving" by Wang et al., *International Conference on Robotics and Automation (ICRA)*, 2022.
+
+Despite their strengths, these datasets do not contain scenes where pedestrians cross the street while a car approaches, leading to a potential crash situation. Consequently, we must continue to work with the dataset currently in use.
+
+---
+
 ### Accuracy of Pipeline
+Noticeable inconsistencies can be observed in the ground truth data, ranging from varying step-sizes to backward steps and unusual directional patterns (e.g., zig-zag movements). Since this pipeline determines the pedestrian's position based on two computer vision models (a depth model and a pose model), an inherent uncertainty arises from their individual limitations, leading to inconsistencies between frames. An additional contributing factor is the inconsistent framerate of the camera. The `.mp4` videos do not maintain a consistent speed, resulting in a framerate that varies over time or a video speed that fluctuates throughout the scene.
+
 
 # Possible Extensions
