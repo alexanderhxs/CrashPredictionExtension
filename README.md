@@ -152,11 +152,11 @@ The following shows the prediction accuracies of the scene `2024-08-22-15-35-33_
 <div style="display: flex; justify-content: center; gap: 20px;">
   <div style="text-align: center;">
     <p><strong>Sample Prediction of the CVM model</strong></p>
-    <img src="resources/sample_prediction_CVM.png" alt="CVM Prediction" width="400">
+    <img src="resources/sample_prediction_CVM.png" alt="CVM Prediction" width="300">
   </div>
   <div style="text-align: center;">
     <p><strong>Sample Prediction of Trajecton++ model</strong></p>
-    <img src="resources/sample_prediction_trajectonpp.png" alt="Trajecton++ Prediction" width="400">
+    <img src="resources/sample_prediction_trajectonpp.png" alt="Trajecton++ Prediction" width="300">
   </div>
 
 
