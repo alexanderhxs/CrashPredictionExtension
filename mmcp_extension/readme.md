@@ -74,3 +74,46 @@ Your terminal prompt should now be prefixed with `(.venv)`.
 
 ### `requirements.txt`
 
+### Installation Steps
+
+1.  **Install PyTorch (Special Instructions)**:
+    Do **not** install PyTorch via the `requirements.txt` file directly. The required version depends on your hardware (CPU or a specific version of CUDA for GPU).
+
+    *   Go to the [Official PyTorch Website](https://pytorch.org/get-started/locally/).
+    *   Select the appropriate options for your system (e.g., Stable, Windows/Linux, Pip, Python, CUDA version or CPU).
+    *   Copy the generated command and run it in your activated virtual environment.
+
+    For example, a command for a system with CUDA 11.8 would look like this:
+    ```bash
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    ```
+    A CPU-only command would be:
+    ```bash
+    pip install torch torchvision torchaudio
+    ```
+
+2.  **Install Remaining Packages**:
+    Once PyTorch is installed, you can install the rest of the required packages using the `requirements.txt` file:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## 4. Download Pre-trained Models
+
+The pipeline relies on pre-trained models for depth estimation and pose detection.
+
+1.  **Depth Model (`get_depth`)**:
+    The depth estimation model requires specific checkpoint files. A script is provided to download them. Navigate to the `Trajectory Prediction/get_depth` directory and run the shell script:
+    ```bash
+    # In directory: Trajectory Prediction/get_depth/
+    sh ./fetch_checkpoints.sh
+    ```
+    This will download the models and place them in the `Trajectory Prediction/get_depth/checkpoints/` directory.
+
+2.  **Pose Model (`get_pose`)**:
+    The pose estimation script requires the `body_pose_model.pth` file. You need to download it manually and place it in the `Trajectory Prediction/get_pose/model/` directory.
+    *   **Download Link**: [http://posefs1.corp.camre.local/Users/zhe/projects/BodyPose/model/body_pose_model.pth](http://posefs1.corp.camre.local/Users/zhe/projects/BodyPose/model/body_pose_model.pth)
+    *   **Destination Path**: `Crash-Prediction/Trajectory Prediction/get_pose/model/body_pose_model.pth`
+
+After completing these steps, your environment will be fully configured to run the data processing
+
